@@ -7,16 +7,17 @@ var b = document.getElementById('asdf');
 var states = document.getElementById('states');
 var n,m;
 
+var nfaST = [];
+
 states.addEventListener('click',(event)=>{
     event.preventDefault();
     var table = document.createElement('table');
-    n = document.getElementById('nofstates');
-    m = document.getElementById('nofsymbols');
+    n = document.getElementById('nofstates').value;
+    m = document.getElementById('nofsymbols').value;
 
     var tr = '<thead> <tr>';
     tr = tr + `<th>Q\E</th>`;
     for(let i=0;i<m;i++){
-        //not working why?
         console.log('s');
         tr = tr + `<th>${i}</th>`;
     }
@@ -33,7 +34,9 @@ states.addEventListener('click',(event)=>{
     }
     table.innerHTML=tr;
     var input = document.getElementById('input');
-
+    var p = document.createElement('p');
+    p.innerHTML = "Enter the state transition table for the NFA:";
+    input.appendChild(p);
     input.appendChild(table);
 })
 

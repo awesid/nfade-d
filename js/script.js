@@ -7,10 +7,11 @@ var b = document.getElementById('asdf');
 var states = document.getElementById('states');
 var n,m;
 
-var nfaST = [];
+var nfaST = [];// this is state transition table for nfa
 
 states.addEventListener('click',(event)=>{
     event.preventDefault();
+    console.log("sghjk");
     var table = document.createElement('table');
     n = document.getElementById('nofstates').value;
     m = document.getElementById('nofsymbols').value;
@@ -38,7 +39,69 @@ states.addEventListener('click',(event)=>{
     p.innerHTML = "Enter the state transition table for the NFA:";
     input.appendChild(p);
     input.appendChild(table);
+});
+var convert = document.getElementById('convert');
+
+
+convert.addEventListener('click',(event)=>{
+    event.preventDefault();
+    var a = [];
+    nfaST=[];
+    var s = document.getElementsByClassName('stateTable');
+
+    for(let i=0;i<n;i++){
+        a = [];
+        for(let j=0;j<m;j++){
+            a.push(s[n*i+j].value);
+        }
+        nfaST.push(a);
+    }
+    console.log(nfaST);
+    displayNFA(nfaST);
 })
+
+function displayNFA(a){
+    var x = [];
+    var obj={};
+    for(let i=0;i<n;i++){
+        obj = { 
+            id : i, 
+            label:`q${i}`
+        };
+        x.push(obj);
+    }
+    var nodes = new vis.DataSet(x);
+    console.log(x);
+    x = [];
+    console.log(n + " " + m)
+    for(let i=0;i<n;i++){
+        for(let j =0;j<m;j++){
+            console.log( "value:"+ a[i][j]);
+            if(a[i][j]){
+                var y = a[i][j].split('Q')[1];
+                console.log(y);
+                obj = {
+                    from:i,
+                    to:y,
+                    arrows:'to',
+                    label:j.toString(),
+                    font:{align:'top'}
+                };
+                x.push(obj);
+                console.log(x);
+            }
+        }
+    }
+
+    var edges = new vis.DataSet(x);
+    var data = {
+        nodes: nodes,
+        edges:edges
+    }
+    var options = {};
+    var container = document.getElementById('sdf');
+    var network = new vis.Network(container,data,options);
+}
 
 /*b.addEventListener('click', (event) => {
     //console.log("asd");

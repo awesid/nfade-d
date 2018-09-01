@@ -170,17 +170,19 @@ function helper(state, NFAtable, DFAtable, nodes) {
 
     var temp = [];
     for (var i = 0; i < col; i++) {
-
-      if (!find(NFAtable[y][i], nodes)&&NFAtable[y][i]!="") {
-        nodes.push(NFAtable[y][i]);
-        console.log("pushing " + NFAtable[y][i]);
+        var transitionState = NFAtable[y][i];
+        transitionState = MyUnion(transitionState);
+      if (!find(transitionState, nodes)&&transitionState!="") {
+        nodes.push(transitionState);
+        console.log("pushing " + transitionState);
       }
-      console.log(nodes);
-      console.log(NFAtable[y][i]);
-      temp.push(NFAtable[y][i]);
+      //console.log(nodes);
+      console.log(transitionState);
+      temp.push(transitionState);
     }
     DFAtable.push(temp);
-  } else {
+  }
+   else {
 
     var temp = [];
     for (var i = 0; i < col; i++) {

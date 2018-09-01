@@ -5,7 +5,7 @@ var b = document.getElementById('asdf');
 //function dfaToGraph();
 
 var states = document.getElementById('states');
-var n, m;
+var n, m, b;
 var array;
 var nfaST = []; // this is state transition table for nfa
 
@@ -16,14 +16,27 @@ states.addEventListener('click', (event) => {
   n = document.getElementById('nofstates').value;
   //  console.log(document.getElementById('nofstates').value);
   m = document.getElementById('nofsymbols').value;
+  b = document.getElementById('EpsilonNFA').checked;
+  console.log(b);
   array = [];
 
   var tr = '<thead> <tr>';
   tr = tr + `<th>Q\E</th>`;
-  for (let i = 0; i < m; i++) {
-    //  console.log('s');
-    tr = tr + `<th>${i}</th>`;
+  if(b==true){
+    for (let i = 0; i < m-1; i++) {
+      //  console.log('s');
+      tr = tr + `<th>${i}</th>`;
+    }
+    tr = tr + `<th>ε</th>`;
   }
+  else{
+    for (let i = 0; i < m; i++) {
+      //  console.log('s');
+      tr = tr + `<th>${i}</th>`;
+    }
+  }
+
+
   tr = tr + '</tr> </thead>';
   //  console.log(tr);
   tr = tr + '<tbody>';
@@ -70,10 +83,50 @@ convert.addEventListener('click', (event) => {
     nfaST.push(a);
   }
   //console.log(nfaST);
-  NFAtoDFA(nfaST);
   displayNFA(nfaST);
-})
+  if(b==true)
+  eNFAtoDFA(nfaST);
+  else
+  NFAtoDFA(nfaST);
 
+})
+function closure(i, nfaST, temp){
+  temp.push("Q"+i);
+  if(nfaST[i][n-1]!=""){
+    var splitStates = nfaST[i][n-1].split(" ");
+    for(let i=0; i<splitStates.length; i++){
+      var y = splitStates[i].split("Q")[1];
+      closure(y, nfaST, temp);
+    }
+  }
+}
+function eNFAtoDFA(NFAtable){
+  var nodes = [];
+  var temp = [];
+  closure(0, NFAtable, temp);
+  console.log(temp);
+  var ans = "";
+  ans = temp[0];
+  for (let i = 1; i < temp.length; i++)
+    ans = ans + " " + temp[i];
+  ans = MyUnion(ans);
+  nodes.push(ans);
+  var DFAtable = [];
+
+  var index = 0;
+  while (1) {
+    console.log(nodes);
+    helper(nodes[index], NFAtable, DFAtable, nodes);
+
+    if (index == nodes.length - 1)
+      break;
+    else
+      index++;
+
+  }
+  console.log(DFAtable);
+  display2(DFAtable, nodes);
+}
 function MyUnion(ans) {
   if (ans == "")
     return ans;
@@ -131,7 +184,7 @@ function helper(state, NFAtable, DFAtable, nodes) {
       }
       ans = MyUnion(ans);
       temp.push(ans);
-      if (!find(ans, nodes))
+      if (!find(ans, nodes)&&ans!="")
         nodes.push(ans);
       console.log(nodes);
     }
@@ -175,6 +228,9 @@ function search(obj, x){
   return -1;
 }
 function display2(a, node) {
+  var col = m;
+  if(b==true)
+    col--;
   var x = [];
   var obj = {};
   for (let i = 0; i < node.length; i++) {
@@ -188,8 +244,8 @@ function display2(a, node) {
   //console.log(x);
   x = [];
   console.log(n + " " + m)
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
+  for (let i = 0; i < node.length; i++) {
+    for (let j = 0; j < col; j++) {
       console.log("value:" + a[i][j]);
 
       if (a[i][j]) {
@@ -254,11 +310,16 @@ function displayNFA(a) {
           //  console.log(arr[k]);
           var y = arr[k].split('Q')[1];
           //console.log(y);
+          var ss;
+          if(b==true&&j==m-1)
+            ss = "ε";
+          else
+            ss = j.toString();
           obj = {
             from: i,
             to: y,
             arrows: 'to',
-            label: j.toString(),
+            label: ss,
             font: {
               align: 'top'
             }
@@ -268,7 +329,7 @@ function displayNFA(a) {
             x.push(obj);
           }
           else{
-            x[index].label+=","+j.toString();
+            x[index].label+=","+ss;
           }
         }
         //console.log(x);

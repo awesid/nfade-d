@@ -53,29 +53,17 @@ convert.addEventListener('click', (event) => {
   event.preventDefault();
   initials = document.getElementById('initials').value.toString().split(" ");
   finals = document.getElementById('finals').value.toString().split(" ");
-  array = [];
+  var a = [];
+  nfaST = [];
   for (var i = 0; i < n; i++) {
     var a = [];
     for (var j = 0; j < m; j++) {
       var temp = "stateTable" + i.toString() + j.toString();
-      atemp.push(document.getElementById(temp).value);
-    }
-    array.push(atemp);
-  }
-  //  console.log(array);
-
-  var a = [];
-  nfaST = [];
-  //  var s = document.getElementsByClassName('stateTable');
-
-  for (let i = 0; i < n; i++) {
-    a = [];
-    for (let j = 0; j < m; j++) {
-      a.push(array[i][j]);
+      a.push(document.getElementById(temp).value);
     }
     nfaST.push(a);
   }
-  console.log(nfaST);
+
   displayNFA(nfaST);
   if(b==true)
   eNFAtoDFA(nfaST);

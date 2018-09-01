@@ -91,7 +91,10 @@ convert.addEventListener('click', (event) => {
 
 })
 function closure(i, nfaST, temp){
-  temp.push("Q"+i);
+  var s = "Q"+i;
+  if(temp.indexOf(s)!=-1)
+    return;
+  temp.push(s);
   console.log(temp);
   if(nfaST[i][m-1]!=""){
 

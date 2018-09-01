@@ -92,8 +92,11 @@ convert.addEventListener('click', (event) => {
 })
 function closure(i, nfaST, temp){
   temp.push("Q"+i);
-  if(nfaST[i][n-1]!=""){
-    var splitStates = nfaST[i][n-1].split(" ");
+  console.log(temp);
+  if(nfaST[i][m-1]!=""){
+
+    console.log(nfaST[i][m-1]);
+    var splitStates = nfaST[i][m-1].split(" ");
     for(let i=0; i<splitStates.length; i++){
       var y = splitStates[i].split("Q")[1];
       closure(y, nfaST, temp);
@@ -154,12 +157,16 @@ function find(state, nodes) {
 }
 
 function helper(state, NFAtable, DFAtable, nodes) {
+  console.log(state);
+  var col = m;
+  if(b==true)
+  col = m-1;
   var splitStates = state.split(" ");
   if (splitStates.length == 1) {
     var y = splitStates[0].split("Q")[1];
 
     var temp = [];
-    for (var i = 0; i < m; i++) {
+    for (var i = 0; i < col; i++) {
 
       if (!find(NFAtable[y][i], nodes)&&NFAtable[y][i]!="") {
         nodes.push(NFAtable[y][i]);
@@ -173,7 +180,7 @@ function helper(state, NFAtable, DFAtable, nodes) {
   } else {
 
     var temp = [];
-    for (var i = 0; i < m; i++) {
+    for (var i = 0; i < col; i++) {
       var ans = "";
       for (var j = 0; j < splitStates.length; j++) {
         var y = splitStates[j].split("Q")[1];

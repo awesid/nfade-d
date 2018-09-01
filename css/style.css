@@ -1,24 +1,66 @@
-*{
-    margin: 0px;
-    padding: 0px;
+* {
+  margin: 0px;
+  padding: 0px;
 }
 
-#DFA{
-    height:200px;
-    width: 400px;
-    border: 1px solid black;
-}
-#NFA{
-    height:200px;
-    width: 400px;
-    border: 1px solid black;
+#DFA {
+  height: 20em;
+  width: 100%;
+  margin: auto;
+  border: 1px solid lightblue;
 }
 
-table, th, td {
+#NFA {
+  height: 20em;
+  width: 100%;
+  margin: auto;
+  border: 1px solid lightblue;
+}
+
+body {
+  padding: 5%;
+  font-family: "Anaheim", sans-serif;
+  font-size: 1em;
+  /* color: #737f8a; */
+}
+
+col {
+  height: 100%;
+}
+
+container-fluis {
+  height: 100%;
+}
+
+/* table, th, td {
     border: 1px solid black;
     border-collapse: collapse;
 }
 th, td {
     padding: 15px;
     text-align: left;
+} */
+
+#heading {
+  width: 100%;
+  margin: auto;
+}
+
+h1 {
+  display: inline;
+  position: relative;
+  font: bold 330%/100% "Lucida Grande";
+  /* font-weight: bold; */
+  letter-spacing: -3px;
+  color: rgbargba(96, 96, 96, 1);
+  text-align: center;
+  margin: auto;
+}
+
+h1:after {
+  content: "NFA TO DFA";
+  position: absolute;
+  left: -3px;
+  top: 2px;
+  color: rgba(136, 136, 136, 1);
 }

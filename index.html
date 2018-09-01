@@ -1,47 +1,91 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>NFADE'D</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>NFADE'D</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <!--Vis.js: computer networks visualization library-->
+  <script src="js/vis.js"></script>
+  <script src="js/vis-network.min.js"></script>
+  <link rel="stylesheet" href="css/vis.css">
+  <link rel="stylesheet" type="text/css" href="css/vis-network.min.css">
 
-    <!--Vis.js: computer networks visualization library-->
-    <script src="js/vis.js"></script>
-    <script src="js/vis-network.min.js"></script>
-    <link rel="stylesheet" href="css/vis.css">
-    <link rel="stylesheet" type="text/css" href="css/vis-network.min.css">
-
-    <!--custom CSS-->
-    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
+  <!--custom CSS-->
+  <link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
 
 </head>
+
 <body>
-    <label for="nofstates">Enter the number of states</label>
-    <input id="nofstates" type="text">
-    <label for="nofsymbols">Enter the number of symbols</label>
-    <input type="text" id="nofsymbols">
-    <label for="EpsilonNFA">Epsilon-NFA</label>
-    <input id="EpsilonNFA" type="checkbox">
-    <label for="initials">Initial state(s)</label>
-    <input id="initials" type="text">
-    <label for="finals">Final state(s)</label>
-    <input id="finals" type="text">
-    <br />
-    <button id="states">Enter</button>
-    <div id="input"></div>
-    <button id="convert">Convert!</button>
-    <br />
-    <label for="NFA">NFA entered:-</label>
-    <div id = "NFA"></div>
-    <label for="NFA">Transformed DFA:-</label>
-    <div id="DFA"></div>
-    <script src="js/script.js"></script>
+
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="container-fluid" id="heading">
+        <h1>NFA TO DFA</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+
+
+        <div class="form-group">
+          <label for="nofstates">Number of states</label>
+          <input id="nofstates" class="form-control" type="text" placeholder="Enter the number of states">
+        </div>
+        <div class="form-group">
+          <label for="nofsymbols">Number of symbols</label>
+          <input placeholder="Enter the number of symbols" type="text" class="form-control" id="nofsymbols">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="EpsilonNFA">
+          <label class="form-check-label" for="EpsilonNFA">EpsilonNFA</label>
+        </div>
+        <div class="form-group">
+          <label for="initials">Initial state(s)</label>
+          <input id="initials" class="form-control" type="text" placeholder="Enter initial state(s)">
+        </div>
+        <div class="form-group">
+          <label for="finals">Final state(s)</label>
+          <input id="finals" class="form-control" type="text" placeholder="Enter final state(s)">
+        </div>
+        <div class="form-group">
+          <button type="button" class="btn btn-primary btn-block" id="states">Enter</button>
+        </div>
+        <div id="input"></div>
+        <button type="button" class="btn btn-success btn-block" id="convert">Convert!</button>
+
+      </div>
+      <div class="col">
+        <div class="container-fluid">
+          <div class="row" id="NFA">
+            <label for="NFA">NFA entered:-</label>
+          </div>
+          <div class="row" id="DFA">
+            <label for="NFA">Transformed DFA:-</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+  <script src="js/script.js"></script>
 </body>
+
 </html>

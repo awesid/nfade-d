@@ -1,30 +1,52 @@
 var states = document.getElementById('states');
 var n, m, b;
-var array;
 var nfaST = []; // this is state transition table for nfa
-
+var I, F;
+var convert = document.getElementById('convert');
+convert.classList.add('invisible');
+// var NFA = document.getElementById('NFA');
+// NFA.classList.add('invisible');
+// var DFA = document.getElementById('DFA');
+// DFA.classList.add('invisible');
 states.addEventListener('click', (event) => {
   event.preventDefault();
   var input = document.getElementById('input');
+  var NFAcontainer = document.getElementById('NFA');
+  var DFAcontainer = document.getElementById('DFA');
+  NFAcontainer.innerHTML = "";
+  DFAcontainer.innerHTML = "";
   input.innerHTML = "";
+
   var table = document.createElement('table');
+  table.classList.add('table');
+  table.classList.add('table-bordered');
+  table.classList.add('table-hover');
+  table.classList.add('table-sm');
+  table.classList.add('table-light');
   n = document.getElementById('nofstates').value;
   m = document.getElementById('nofsymbols').value;
-  b = document.getElementById('EpsilonNFA').checked;
-  console.log(b);
-  array = [];
-
-  var tr = '<thead> <tr>';
-  tr = tr + `<th>Q\E</th>`;
-  if(b==true){
-    for (let i = 0; i < m-1; i++) {
-      tr = tr + `<th>${i}</th>`;
-    }
-    tr = tr + `<th>ε</th>`;
+  if (!n || !m) {
+    alert("Enter states and symbols please!");
+    return;
   }
-  else{
+  b = document.getElementById('EpsilonNFA').checked;
+  I = document.getElementById('initials').value.toString();
+  F = document.getElementById('finals').value.toString();
+  if (!I || !F) {
+    alert("Enter Initial and Final state(s) please!");
+    return;
+  }
+  nfaST = [];
+  var tr = '<thead class="thead"> <tr>';
+  tr = tr + `<th scope="col">Q\E</th>`;
+  if (b == true) {
+    for (let i = 0; i < m - 1; i++) {
+      tr = tr + `<th scope="col">${i}</th>`;
+    }
+    tr = tr + `<th scope="col">ε</th>`;
+  } else {
     for (let i = 0; i < m; i++) {
-      tr = tr + `<th>${i}</th>`;
+      tr = tr + `<th scope="col">${i}</th>`;
     }
   }
   tr = tr + '</tr> </thead>';
@@ -34,7 +56,7 @@ states.addEventListener('click', (event) => {
     tr = tr + `<td><strong>Q${i}<strong></td>`;
 
     for (let j = 0; j < m; j++) {
-      tr = tr + `<td><input type='text' id = stateTable${i}${j}></td>`;
+      tr = tr + `<td><input class="form-control form-control-sm" type='text' id = stateTable${i}${j}></td>`;
     }
     tr = tr + '</tr>';
   }
@@ -44,15 +66,18 @@ states.addEventListener('click', (event) => {
   p.innerHTML = "Enter the state transition table for the NFA:";
   input.appendChild(p);
   input.appendChild(table);
+  convert.classList.remove('invisible');
+  convert.classList.add('visible');
 });
-var convert = document.getElementById('convert');
+
+
 
 
 convert.addEventListener('click', (event) => {
 
   event.preventDefault();
-  initials = document.getElementById('initials').value.toString().split(" ");
-  finals = document.getElementById('finals').value.toString().split(" ");
+  initials = I.split(" ");
+  finals = F.split(" ");
   var a = [];
   nfaST = [];
   for (var i = 0; i < n; i++) {
@@ -63,33 +88,84 @@ convert.addEventListener('click', (event) => {
     }
     nfaST.push(a);
   }
-
+  if (!valid(nfaST)) {
+    alert("Enter valid Transition Table!");
+    return;
+  }
   displayNFA(nfaST);
-  if(b==true)
-  eNFAtoDFA(nfaST);
+  if (b == true)
+    eNFAtoDFA(nfaST);
   else
-  NFAtoDFA(nfaST);
+    NFAtoDFA(nfaST);
 
-})
-function closure(i, nfaST, temp){
-  var s = "Q"+i;
-  if(temp.indexOf(s)!=-1)
+});
+
+function equal(num, q, spaces) {
+  spaces++;
+  return (spaces == q) && (q == num);
+}
+
+function checkStateValidity(state) {
+  if (state == "")
+    return true;
+  var q = 0;
+  var num = 0;
+  var spaces = 0;
+  var other = 0;
+
+  for (var i = 0; i < state.length; i++) {
+    var y = state.charAt(i);
+    if (y == 'Q')
+      q++;
+    else if (y >= '0' && y <= '9')
+      num++;
+    else if (y == " ")
+      spaces++;
+    else
+      other++;
+  }
+  if (other != 0 || !equal(num, q, spaces))
+    return false;
+  return true;
+}
+
+function valid(NFA) {
+  if (!NFA)
+    return false;
+  var count = 0;
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < m; j++) {
+      if (NFA[i][j] != "")
+        count++;
+      if (checkStateValidity(NFA[i][j]) == false)
+        return false;
+    }
+  }
+  if (count == 0)
+    return false;
+  return true;
+}
+
+function closure(i, nfaST, temp) {
+  var s = "Q" + i;
+  if (temp.indexOf(s) != -1)
     return;
   temp.push(s);
   console.log(temp);
-  if(nfaST[i][m-1]!=""){
+  if (nfaST[i][m - 1] != "") {
 
-    console.log(nfaST[i][m-1]);
-    var splitStates = nfaST[i][m-1].split(" ");
-    for(let i=0; i<splitStates.length; i++){
+    console.log(nfaST[i][m - 1]);
+    var splitStates = nfaST[i][m - 1].split(" ");
+    for (let i = 0; i < splitStates.length; i++) {
       var y = splitStates[i].split("Q")[1];
-      if(temp.indexOf(splitStates[i])===-1){
+      if (temp.indexOf(splitStates[i]) === -1) {
         closure(y, nfaST, temp);
       }
     }
   }
 }
-function eNFAtoDFA(NFAtable){
+
+function eNFAtoDFA(NFAtable) {
   var nodes = [];
   var temp = [];
   closure(0, NFAtable, temp);
@@ -116,6 +192,7 @@ function eNFAtoDFA(NFAtable){
   console.log(DFAtable);
   display2(DFAtable, nodes);
 }
+
 function MyUnion(ans) {
   if (ans == "")
     return ans;
@@ -127,18 +204,19 @@ function MyUnion(ans) {
   }
   u.sort();
   ans = "";
-  var iflag=false,fflag=false;
-  if(initials.indexOf(u[0])!==-1) iflag=true;
-  if(finals.indexOf(u[0])!==-1) fflag=true;
+  var iflag = false,
+    fflag = false;
+  if (initials.indexOf(u[0]) !== -1) iflag = true;
+  if (finals.indexOf(u[0]) !== -1) fflag = true;
   ans = u[0];
-  for (let i = 1; i < u.length; i++){
-    if(initials.indexOf(u[i])!==-1) iflag=true;
-    if(finals.indexOf(u[i])!==-1) fflag=true;
+  for (let i = 1; i < u.length; i++) {
+    if (initials.indexOf(u[i]) !== -1) iflag = true;
+    if (finals.indexOf(u[i]) !== -1) fflag = true;
     ans = ans + " " + u[i];
   }
 
-  if(iflag) initials.push(ans);
-  if(fflag) finals.push(ans);
+  if (iflag) initials.push(ans);
+  if (fflag) finals.push(ans);
   return ans;
 }
 
@@ -154,17 +232,17 @@ function find(state, nodes) {
 function helper(state, NFAtable, DFAtable, nodes) {
   console.log(state);
   var col = m;
-  if(b==true)
-  col = m-1;
+  if (b == true)
+    col = m - 1;
   var splitStates = state.split(" ");
   if (splitStates.length == 1) {
     var y = splitStates[0].split("Q")[1];
 
     var temp = [];
     for (var i = 0; i < col; i++) {
-        var transitionState = NFAtable[y][i];
-        transitionState = MyUnion(transitionState);
-      if (!find(transitionState, nodes)&&transitionState!="") {
+      var transitionState = NFAtable[y][i];
+      transitionState = MyUnion(transitionState);
+      if (!find(transitionState, nodes) && transitionState != "") {
         nodes.push(transitionState);
         console.log("pushing " + transitionState);
       }
@@ -187,7 +265,7 @@ function helper(state, NFAtable, DFAtable, nodes) {
       }
       ans = MyUnion(ans);
       temp.push(ans);
-      if (!find(ans, nodes)&&ans!="")
+      if (!find(ans, nodes) && ans != "")
         nodes.push(ans);
       console.log(nodes);
     }
@@ -223,16 +301,18 @@ function NFAtoDFA(NFAtable) {
   console.log(DFAtable);
   display2(DFAtable, nodes);
 }
-function search(obj, x){
-  for(let i=0; i<x.length; i++){
-    if((obj.from==x[i].from)&&(obj.to==x[i].to))
+
+function search(obj, x) {
+  for (let i = 0; i < x.length; i++) {
+    if ((obj.from == x[i].from) && (obj.to == x[i].to))
       return i;
   }
   return -1;
 }
+
 function display2(a, node) {
   var col = m;
-  if(b==true)
+  if (b == true)
     col--;
   var x = [];
   var obj = {};
@@ -241,17 +321,24 @@ function display2(a, node) {
       id: i,
       label: `${node[i]}`
     };
-    if(initials.indexOf(obj.label)!==-1){
-      obj.color= { border:'black'};
+    if (initials.indexOf(obj.label) !== -1) {
+      obj.color = {
+        border: 'black'
+      };
     }
 
-    if(finals.indexOf(obj.label)!==-1){
-      obj.color={background:'yellow',border:'yellow'};
+    if (finals.indexOf(obj.label) !== -1) {
+      obj.color = {
+        background: 'yellow',
+        border: 'yellow'
+      };
     }
 
-    if(initials.indexOf(obj.label)!==-1 && finals.indexOf(obj.label)!==-1){
-      console.log("Sdfggredfgredf00");
-      obj.color={ background:'yellow', border:'black'};
+    if (initials.indexOf(obj.label) !== -1 && finals.indexOf(obj.label) !== -1) {
+      obj.color = {
+        background: 'yellow',
+        border: 'black'
+      };
     }
     x.push(obj);
   }
@@ -271,18 +358,19 @@ function display2(a, node) {
           to: y,
           arrows: 'to',
           label: j.toString(),
-          color:{color:'black'},
+          color: {
+            color: 'black'
+          },
           font: {
             align: 'top'
           }
         };
-      var index = search(obj, x);
-      if(index==-1){
-        x.push(obj);
-      }
-      else{
-        x[index].label+=","+j.toString();
-      }
+        var index = search(obj, x);
+        if (index == -1) {
+          x.push(obj);
+        } else {
+          x[index].label += "," + j.toString();
+        }
 
 
       }
@@ -295,19 +383,27 @@ function display2(a, node) {
     edges: edges
   }
   var options = {
-      nodes: {borderWidth: 2},
-      interaction: {hover: true},
-      physics:{
-        barnesHut:{
-          gravitationalConstant:-4000
-        }
-      },
-      edges:{
-        arrows: {
-          to:{enabled: false, scaleFactor:0.5, type:'arrow'}
+    nodes: {
+      borderWidth: 2
+    },
+    interaction: {
+      hover: true
+    },
+    physics: {
+      barnesHut: {
+        gravitationalConstant: -4000
+      }
+    },
+    edges: {
+      arrows: {
+        to: {
+          enabled: false,
+          scaleFactor: 0.5,
+          type: 'arrow'
         }
       }
-    };
+    }
+  };
   var container = document.getElementById('DFA');
   var network = new vis.Network(container, data, options);
 }
@@ -322,16 +418,21 @@ function displayNFA(a) {
       id: i,
       label: `Q${i}`
     };
-    if(initials.indexOf(obj.label)!==-1){
-      obj.color= { border:'black'};
+    if (initials.indexOf(obj.label) !== -1) {
+      obj.color = {
+        border: 'black'
+      };
     }
 
-    if(finals.indexOf(obj.label)!==-1){
-      obj.color='yellow';
+    if (finals.indexOf(obj.label) !== -1) {
+      obj.color = 'yellow';
     }
 
-    if(initials.indexOf(obj.label)!==-1 && finals.indexOf(obj.label)!==-1){
-      obj.color={ border:'black',background:'yellow'};
+    if (initials.indexOf(obj.label) !== -1 && finals.indexOf(obj.label) !== -1) {
+      obj.color = {
+        border: 'black',
+        background: 'yellow'
+      };
     }
     x.push(obj);
   }
@@ -351,7 +452,7 @@ function displayNFA(a) {
           var y = arr[k].split('Q')[1];
           //console.log(y);
           var ss;
-          if(b==true&&j==m-1)
+          if (b == true && j == m - 1)
             ss = "ε";
           else
             ss = j.toString();
@@ -360,17 +461,18 @@ function displayNFA(a) {
             to: y,
             arrows: 'to',
             label: ss,
-            color:{color:'black'},
+            color: {
+              color: 'black'
+            },
             font: {
               align: 'top'
             }
           };
           var index = search(obj, x);
-          if(index==-1){
+          if (index == -1) {
             x.push(obj);
-          }
-          else{
-            x[index].label+=","+ss;
+          } else {
+            x[index].label += "," + ss;
           }
         }
         //console.log(x);
@@ -384,51 +486,27 @@ function displayNFA(a) {
     edges: edges
   }
   var options = {
-    nodes: {borderWidth: 2},
-    interaction: {hover: true},
-    physics:{
-      barnesHut:{
-        gravitationalConstant:-4000
+    nodes: {
+      borderWidth: 2
+    },
+    interaction: {
+      hover: true
+    },
+    physics: {
+      barnesHut: {
+        gravitationalConstant: -4000
       }
     },
-    edges:{
+    edges: {
       arrows: {
-        to:{enabled: false, scaleFactor:0.5, type:'arrow'}
+        to: {
+          enabled: false,
+          scaleFactor: 0.5,
+          type: 'arrow'
+        }
       }
     }
   };
   var container = document.getElementById('NFA');
   var network = new vis.Network(container, data, options);
 }
-
-/*b.addEventListener('click', (event) => {
-    //console.log("asd");
-    event.preventDefault();
-    var nodes = new vis.DataSet([
-        {
-            id: 1,
-            label: '1'
-        },
-        {
-            id: 2,
-            label: '2'
-        }
-    ]);
-    var edges = new vis.DataSet([
-        {
-            from: 1,
-            to: 2,
-            arrows: 'to',
-            label: '23',
-            font: { align: 'top' }
-        }
-    ]);
-    var container = document.getElementById('sdf');
-    var data = {
-        nodes: nodes,
-        edges: edges
-    }
-    var options = {};
-
-    var network = new vis.Network(container, data, options);
-})*/

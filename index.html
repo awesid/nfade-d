@@ -31,23 +31,30 @@
       <div class="col" id="heading">
         <h1>NFA TO DFA</h1>
       </div>
-      <div class="col">
-      <div class="btn-group dropright">
-        <button class="btn btn-secondary btn-sm btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            INSTRUCTIONS
-        </button>
-        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
-      <p>
-        The number of symbols should include epsilon if it is present.
-      </p>
     </div>
-      </div>
-      </div>
-    </div>
-
+    <br />
     <div class="row">
       <div class="col">
-
+        <p>
+    <button class="btn btn-primary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      INSTRUCTIONS
+    </button>
+  </p>
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body">
+      1.Number of states should be between 1 and 10.
+      <br />
+      2.The number of input symbols should count epsilon if it is present.
+      <br />
+      3.Valid state input: Qi (0<=i<=9).
+      <br />
+      4.Valid multiple states input: Qi Qj ...Qn.
+      <br />
+      5.State transition table should not be empty.
+      <br />
+      6.No need to refresh to update table/NFA entered. Update the required and hit enter/convert.
+      </div>
+  </div>
 
         <div class="form-group">
           <label for="nofstates">Number of states</label>
@@ -72,10 +79,10 @@
           <input id="finals" class="form-control form-control-sm" type="text" placeholder="Enter final state(s)">
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-primary btn-block" id="states">Enter</button>
+          <button type="button" class="btn btn-primary btn-block" id="states">ENTER</button>
         </div>
         <div id="input"></div>
-        <button type="button" class="btn btn-success btn-block" id="convert">Convert!</button>
+        <button type="button" class="btn btn-success btn-block" id="convert">CONVERT!</button>
 
       </div>
       <div class="col">
@@ -83,11 +90,13 @@
         <div class="container-fluid">
 
 
-          <div class="row" id="NFA">
+          <div class="row">
             <label for="NFA">NFA entered:-</label>
+            <div id="NFA">  </div>
           </div>
-          <div class="row" id="DFA">
+          <div class="row">
             <label for="NFA">Transformed DFA:-</label>
+            <div id="DFA">  </div>
           </div>
         </div>
 

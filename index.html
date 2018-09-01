@@ -28,8 +28,20 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="container-fluid" id="heading">
+      <div class="col" id="heading">
         <h1>NFA TO DFA</h1>
+      </div>
+      <div class="col">
+      <div class="btn-group dropright">
+        <button class="btn btn-secondary btn-sm btn-block dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            INSTRUCTIONS
+        </button>
+        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+      <p>
+        The number of symbols should include epsilon if it is present.
+      </p>
+    </div>
+      </div>
       </div>
     </div>
 
@@ -39,11 +51,13 @@
 
         <div class="form-group">
           <label for="nofstates">Number of states</label>
-          <input id="nofstates" class="form-control" type="text" placeholder="Enter the number of states">
+
+          <input id="nofstates" class="form-control form-control-sm" type="text" placeholder="Enter the number of states">
         </div>
         <div class="form-group">
-          <label for="nofsymbols">Number of symbols</label>
-          <input placeholder="Enter the number of symbols" type="text" class="form-control" id="nofsymbols">
+          <label for="nofsymbols">Number of Inputs</label>
+
+          <input placeholder="Enter the number of input symbols" type="text" class="form-control form-control-sm" id="nofsymbols">
         </div>
         <div class="form-group form-check">
           <input type="checkbox" class="form-check-input" id="EpsilonNFA">
@@ -51,11 +65,11 @@
         </div>
         <div class="form-group">
           <label for="initials">Initial state(s)</label>
-          <input id="initials" class="form-control" type="text" placeholder="Enter initial state(s)">
+          <input id="initials" class="form-control form-control-sm" type="text" placeholder="Enter initial state(s)">
         </div>
         <div class="form-group">
           <label for="finals">Final state(s)</label>
-          <input id="finals" class="form-control" type="text" placeholder="Enter final state(s)">
+          <input id="finals" class="form-control form-control-sm" type="text" placeholder="Enter final state(s)">
         </div>
         <div class="form-group">
           <button type="button" class="btn btn-primary btn-block" id="states">Enter</button>
@@ -65,7 +79,10 @@
 
       </div>
       <div class="col">
+
         <div class="container-fluid">
+
+
           <div class="row" id="NFA">
             <label for="NFA">NFA entered:-</label>
           </div>

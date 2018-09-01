@@ -1,5 +1,4 @@
-//var b = document.getElementById('asdf');
-//var states = document.getElementById('states');
+var states = document.getElementById('states');
 var n, m, b;
 var array;
 var nfaST = []; // this is state transition table for nfa
@@ -50,15 +49,29 @@ var convert = document.getElementById('convert');
 
 
 convert.addEventListener('click', (event) => {
-  event.preventDefault();
 
-  nfaST = [];
-  var a = [];
+  event.preventDefault();
+  initials = document.getElementById('initials').value.toString().split(" ");
+  finals = document.getElementById('finals').value.toString().split(" ");
+  array = [];
   for (var i = 0; i < n; i++) {
     var a = [];
     for (var j = 0; j < m; j++) {
       var temp = "stateTable" + i.toString() + j.toString();
-      a.push(document.getElementById(temp).value);
+      atemp.push(document.getElementById(temp).value);
+    }
+    array.push(atemp);
+  }
+  //  console.log(array);
+
+  var a = [];
+  nfaST = [];
+  //  var s = document.getElementsByClassName('stateTable');
+
+  for (let i = 0; i < n; i++) {
+    a = [];
+    for (let j = 0; j < m; j++) {
+      a.push(array[i][j]);
     }
     nfaST.push(a);
   }
@@ -82,7 +95,9 @@ function closure(i, nfaST, temp){
     var splitStates = nfaST[i][m-1].split(" ");
     for(let i=0; i<splitStates.length; i++){
       var y = splitStates[i].split("Q")[1];
-      closure(y, nfaST, temp);
+      if(temp.indexOf(splitStates[i])===-1){
+        closure(y, nfaST, temp);
+      }
     }
   }
 }
@@ -124,9 +139,18 @@ function MyUnion(ans) {
   }
   u.sort();
   ans = "";
+  var iflag=false,fflag=false;
+  if(initials.indexOf(u[0])!==-1) iflag=true;
+  if(finals.indexOf(u[0])!==-1) fflag=true;
   ans = u[0];
-  for (let i = 1; i < u.length; i++)
+  for (let i = 1; i < u.length; i++){
+    if(initials.indexOf(u[i])!==-1) iflag=true;
+    if(finals.indexOf(u[i])!==-1) fflag=true;
     ans = ans + " " + u[i];
+  }
+
+  if(iflag) initials.push(ans);
+  if(fflag) finals.push(ans);
   return ans;
 }
 
@@ -229,6 +253,18 @@ function display2(a, node) {
       id: i,
       label: `${node[i]}`
     };
+    if(initials.indexOf(obj.label)!==-1){
+      obj.color= { border:'black'};
+    }
+
+    if(finals.indexOf(obj.label)!==-1){
+      obj.color={background:'yellow',border:'yellow'};
+    }
+
+    if(initials.indexOf(obj.label)!==-1 && finals.indexOf(obj.label)!==-1){
+      console.log("Sdfggredfgredf00");
+      obj.color={ background:'yellow', border:'black'};
+    }
     x.push(obj);
   }
   var nodes = new vis.DataSet(x);
@@ -247,6 +283,7 @@ function display2(a, node) {
           to: y,
           arrows: 'to',
           label: j.toString(),
+          color:{color:'black'},
           font: {
             align: 'top'
           }
@@ -269,7 +306,20 @@ function display2(a, node) {
     nodes: nodes,
     edges: edges
   }
-  var options = {};
+  var options = {
+      nodes: {borderWidth: 2},
+      interaction: {hover: true},
+      physics:{
+        barnesHut:{
+          gravitationalConstant:-4000
+        }
+      },
+      edges:{
+        arrows: {
+          to:{enabled: false, scaleFactor:0.5, type:'arrow'}
+        }
+      }
+    };
   var container = document.getElementById('DFA');
   var network = new vis.Network(container, data, options);
 }
@@ -282,8 +332,19 @@ function displayNFA(a) {
   for (let i = 0; i < n; i++) {
     obj = {
       id: i,
-      label: `q${i}`
+      label: `Q${i}`
     };
+    if(initials.indexOf(obj.label)!==-1){
+      obj.color= { border:'black'};
+    }
+
+    if(finals.indexOf(obj.label)!==-1){
+      obj.color='yellow';
+    }
+
+    if(initials.indexOf(obj.label)!==-1 && finals.indexOf(obj.label)!==-1){
+      obj.color={ border:'black',background:'yellow'};
+    }
     x.push(obj);
   }
   var nodes = new vis.DataSet(x);
@@ -311,6 +372,7 @@ function displayNFA(a) {
             to: y,
             arrows: 'to',
             label: ss,
+            color:{color:'black'},
             font: {
               align: 'top'
             }
@@ -333,7 +395,20 @@ function displayNFA(a) {
     nodes: nodes,
     edges: edges
   }
-  var options = {};
+  var options = {
+    nodes: {borderWidth: 2},
+    interaction: {hover: true},
+    physics:{
+      barnesHut:{
+        gravitationalConstant:-4000
+      }
+    },
+    edges:{
+      arrows: {
+        to:{enabled: false, scaleFactor:0.5, type:'arrow'}
+      }
+    }
+  };
   var container = document.getElementById('NFA');
   var network = new vis.Network(container, data, options);
 }

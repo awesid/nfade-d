@@ -1,20 +1,15 @@
-var b = document.getElementById('asdf');
-
-//function convertEnfaToNfa();
-//function convertNfaToDfa();
-//function dfaToGraph();
-
-var states = document.getElementById('states');
+//var b = document.getElementById('asdf');
+//var states = document.getElementById('states');
 var n, m, b;
 var array;
 var nfaST = []; // this is state transition table for nfa
 
 states.addEventListener('click', (event) => {
   event.preventDefault();
-  //  console.log("sghjk");
+  var input = document.getElementById('input');
+  input.innerHTML = "";
   var table = document.createElement('table');
   n = document.getElementById('nofstates').value;
-  //  console.log(document.getElementById('nofstates').value);
   m = document.getElementById('nofsymbols').value;
   b = document.getElementById('EpsilonNFA').checked;
   console.log(b);
@@ -24,21 +19,16 @@ states.addEventListener('click', (event) => {
   tr = tr + `<th>Q\E</th>`;
   if(b==true){
     for (let i = 0; i < m-1; i++) {
-      //  console.log('s');
       tr = tr + `<th>${i}</th>`;
     }
     tr = tr + `<th>ε</th>`;
   }
   else{
     for (let i = 0; i < m; i++) {
-      //  console.log('s');
       tr = tr + `<th>${i}</th>`;
     }
   }
-
-
   tr = tr + '</tr> </thead>';
-  //  console.log(tr);
   tr = tr + '<tbody>';
   for (let i = 0; i < n; i++) {
     tr = tr + '<tr>';
@@ -46,12 +36,11 @@ states.addEventListener('click', (event) => {
 
     for (let j = 0; j < m; j++) {
       tr = tr + `<td><input type='text' id = stateTable${i}${j}></td>`;
-      //console.log(document.getElementsByClassName('stateTable'));
     }
     tr = tr + '</tr>';
   }
   table.innerHTML = tr;
-  var input = document.getElementById('input');
+
   var p = document.createElement('p');
   p.innerHTML = "Enter the state transition table for the NFA:";
   input.appendChild(p);
@@ -61,28 +50,19 @@ var convert = document.getElementById('convert');
 
 
 convert.addEventListener('click', (event) => {
+  event.preventDefault();
+
+  nfaST = [];
+  var a = [];
   for (var i = 0; i < n; i++) {
-    var atemp = [];
+    var a = [];
     for (var j = 0; j < m; j++) {
       var temp = "stateTable" + i.toString() + j.toString();
-      atemp.push(document.getElementById(temp).value);
-    }
-    array.push(atemp);
-  }
-  //  console.log(array);
-  event.preventDefault();
-  var a = [];
-  nfaST = [];
-  //  var s = document.getElementsByClassName('stateTable');
-
-  for (let i = 0; i < n; i++) {
-    a = [];
-    for (let j = 0; j < m; j++) {
-      a.push(array[i][j]);
+      a.push(document.getElementById(temp).value);
     }
     nfaST.push(a);
   }
-  //console.log(nfaST);
+  console.log(nfaST);
   displayNFA(nfaST);
   if(b==true)
   eNFAtoDFA(nfaST);
@@ -176,13 +156,12 @@ function helper(state, NFAtable, DFAtable, nodes) {
         nodes.push(transitionState);
         console.log("pushing " + transitionState);
       }
-      //console.log(nodes);
+      console.log(nodes);
       console.log(transitionState);
       temp.push(transitionState);
     }
     DFAtable.push(temp);
-  }
-   else {
+  } else {
 
     var temp = [];
     for (var i = 0; i < col; i++) {

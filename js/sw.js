@@ -1,4 +1,4 @@
-var cacheName = 'chess';
+var cacheName = 'NDFA';
 var filesToCache = [
   '../index.html',
   '../css/style.css',

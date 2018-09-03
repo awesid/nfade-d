@@ -207,7 +207,9 @@ function closure(i, nfaST, temp) {
 function eNFAtoDFA(NFAtable) {
 	var nodes = [];
 	var temp = [];
-	closure(0, NFAtable, temp);
+	var init = initials[0].split("Q")[1];
+	console.log("asdfgh:"+init);
+	closure(init, NFAtable, temp);
 	console.log(temp);
 	var ans = "";
 	ans = temp[0];
@@ -321,14 +323,15 @@ function helper(state, NFAtable, DFAtable, nodes) {
 }
 
 function NFAtoDFA(NFAtable) {
-	console.log(NFAtable);
+	//console.log(NFAtable);
 	var nodes = [];
 	var DFAtable = [];
 	if (NFAtable)
-		nodes.push("Q0");
+		nodes.push(initials[0]);
+	//console.log("asd:"+initials);
 	var index = 0;
 	while (1) {
-		console.log(nodes);
+		//console.log(nodes);
 		helper(nodes[index], NFAtable, DFAtable, nodes);
 
 		if (index == nodes.length - 1)
@@ -337,7 +340,7 @@ function NFAtoDFA(NFAtable) {
 			index++;
 
 	}
-	console.log(DFAtable);
+	//console.log(DFAtable);
 	display2(DFAtable, nodes);
 }
 

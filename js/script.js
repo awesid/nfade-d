@@ -133,16 +133,16 @@ function checkStateValidity(state) {
 	var flag = 1;
 	for (var i = 0; i < state.length; i++) {
 		var y = state.charAt(i);
-		console.log(y + ":" + i);
+		//console.log(y + ":" + i);
 		if (y === 'Q') {
 			i++;
 			y = state.charCodeAt(i);
-			console.log(y + ":" + i);
+			//console.log(y + ":" + i);
 			if (y >= 48 && y <= 48+parseInt(n) -1) {
 				i++;
-				console.log(48+parseInt(n)-1+ ":ssdfg:"+y);
+				//console.log(48+parseInt(n)-1+ ":ssdfg:"+y);
 				y = state.charAt(i);
-				console.log(y + ":" + i);
+				//console.log(y + ":" + i);
 				
 				if(y !== " " && i===state.length-1) flag = 0;	
 			} else flag = 0;
@@ -190,10 +190,10 @@ function closure(i, nfaST, temp) {
 	if (temp.indexOf(s) != -1)
 		return;
 	temp.push(s);
-	console.log(temp);
+	//console.log(temp);
 	if (nfaST[i][m - 1] != "") {
 
-		console.log(nfaST[i][m - 1]);
+		//console.log(nfaST[i][m - 1]);
 		var splitStates = nfaST[i][m - 1].split(" ");
 		for (let i = 0; i < splitStates.length; i++) {
 			var y = splitStates[i].split("Q")[1];
@@ -208,9 +208,9 @@ function eNFAtoDFA(NFAtable) {
 	var nodes = [];
 	var temp = [];
 	var init = initials[0].split("Q")[1];
-	console.log("asdfgh:"+init);
+	//console.log("asdfgh:"+init);
 	closure(init, NFAtable, temp);
-	console.log(temp);
+	//console.log(temp);
 	var ans = "";
 	ans = temp[0];
 	for (let i = 1; i < temp.length; i++)
@@ -221,7 +221,7 @@ function eNFAtoDFA(NFAtable) {
 
 	var index = 0;
 	while (1) {
-		console.log(nodes);
+		//console.log(nodes);
 		helper(nodes[index], NFAtable, DFAtable, nodes);
 
 		if (index == nodes.length - 1)
@@ -230,7 +230,7 @@ function eNFAtoDFA(NFAtable) {
 			index++;
 
 	}
-	console.log(DFAtable);
+	//console.log(DFAtable);
 	display2(DFAtable, nodes);
 }
 
@@ -271,7 +271,7 @@ function find(state, nodes) {
 }
 
 function helper(state, NFAtable, DFAtable, nodes) {
-	console.log(state);
+	//console.log(state);
 	var col = m;
 	if (b == true)
 		col = m - 1;
@@ -285,10 +285,10 @@ function helper(state, NFAtable, DFAtable, nodes) {
 			transitionState = MyUnion(transitionState);
 			if (!find(transitionState, nodes) && transitionState != "") {
 				nodes.push(transitionState);
-				console.log("pushing " + transitionState);
+				//console.log("pushing " + transitionState);
 			}
-			console.log(nodes);
-			console.log(transitionState);
+			//console.log(nodes);
+			//console.log(transitionState);
 			temp.push(transitionState);
 		}
 		DFAtable.push(temp);
@@ -308,7 +308,7 @@ function helper(state, NFAtable, DFAtable, nodes) {
 			temp.push(ans);
 			if (!find(ans, nodes) && ans != "")
 				nodes.push(ans);
-			console.log(nodes);
+			//console.log(nodes);
 		}
 		DFAtable.push(temp);
 	}
@@ -323,15 +323,15 @@ function helper(state, NFAtable, DFAtable, nodes) {
 }
 
 function NFAtoDFA(NFAtable) {
-	//console.log(NFAtable);
+	////console.log(NFAtable);
 	var nodes = [];
 	var DFAtable = [];
 	if (NFAtable)
 		nodes.push(initials[0]);
-	//console.log("asd:"+initials);
+	////console.log("asd:"+initials);
 	var index = 0;
 	while (1) {
-		//console.log(nodes);
+		////console.log(nodes);
 		helper(nodes[index], NFAtable, DFAtable, nodes);
 
 		if (index == nodes.length - 1)
@@ -340,7 +340,7 @@ function NFAtoDFA(NFAtable) {
 			index++;
 
 	}
-	//console.log(DFAtable);
+	////console.log(DFAtable);
 	display2(DFAtable, nodes);
 }
 
@@ -385,12 +385,12 @@ function display2(a, node) {
 		x.push(obj);
 	}
 	var nodes = new vis.DataSet(x);
-	//console.log(x);
+	////console.log(x);
 	x = [];
-	console.log(n + " " + m)
+	//console.log(n + " " + m)
 	for (let i = 0; i < node.length; i++) {
 		for (let j = 0; j < col; j++) {
-			console.log("value:" + a[i][j]);
+			//console.log("value:" + a[i][j]);
 
 			if (a[i][j]) {
 
@@ -479,20 +479,20 @@ function displayNFA(a) {
 		x.push(obj);
 	}
 	var nodes = new vis.DataSet(x);
-	//console.log(x);
+	////console.log(x);
 	x = [];
-	console.log(n + " " + m)
+	//console.log(n + " " + m)
 	for (let i = 0; i < n; i++) {
 		for (let j = 0; j < m; j++) {
-			//console.log( "value:"+ a[i][j]);
+			////console.log( "value:"+ a[i][j]);
 
 			if (a[i][j]) {
 				var arr = a[i][j].split(" ");
-				//console.log(arr);
+				////console.log(arr);
 				for (var k = 0; k < arr.length; k++) {
-					//  console.log(arr[k]);
+					//  //console.log(arr[k]);
 					var y = arr[k].split('Q')[1];
-					//console.log(y);
+					////console.log(y);
 					var ss;
 					if (b == true && j == m - 1)
 						ss = "ε";
@@ -517,7 +517,7 @@ function displayNFA(a) {
 						x[index].label += "," + ss;
 					}
 				}
-				//console.log(x);
+				////console.log(x);
 			}
 		}
 	}

@@ -5,7 +5,7 @@ var filesToCache = [
   'css/vis-network.min.css',
   'js/script.js',
   'js/vis-network.min.js',
-  'js/viss.js'
+  'js/vis.js'
 ];
 
 self.addEventListener('install', function(e) {

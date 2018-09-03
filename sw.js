@@ -1,11 +1,11 @@
 var cacheName = 'NDFA';
 var filesToCache = [
-  '../index.html',
-  '../css/style.css',
-  '../css/vis-network.min.css',
-  'script.js',
-  'vis-network.min.js',
-  'vis.js'
+  'index.html',
+  'css/style.css',
+  'css/vis-network.min.css',
+  'js/script.js',
+  'js/vis-network.min.js',
+  'js/viss.js'
 ];
 
 self.addEventListener('install', function(e) {

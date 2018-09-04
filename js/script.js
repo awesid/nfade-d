@@ -245,18 +245,13 @@ function MyUnion(ans) {
 	}
 	u.sort();
 	ans = "";
-	var iflag = false,
-		fflag = false;
-	if (initials.indexOf(u[0]) !== -1) iflag = true;
+	var	fflag = false;
 	if (finals.indexOf(u[0]) !== -1) fflag = true;
 	ans = u[0];
 	for (let i = 1; i < u.length; i++) {
-		if (initials.indexOf(u[i]) !== -1) iflag = true;
 		if (finals.indexOf(u[i]) !== -1) fflag = true;
 		ans = ans + " " + u[i];
 	}
-
-	if (iflag) initials.push(ans);
 	if (fflag) finals.push(ans);
 	return ans;
 }
